@@ -1,6 +1,8 @@
 #include <QtWidgets>
 #include <QtOpenGL>
 
+#include <iostream>
+
 #include "myglwidget.h"
 
 MyGLWidget::MyGLWidget(QWidget *parent) :
@@ -9,6 +11,10 @@ MyGLWidget::MyGLWidget(QWidget *parent) :
     xRot = 0;
     yRot = 0;
     zRot = 0;
+
+	xTran = 0;
+	yTran = 0;
+	zTran = 0;
 }
 
 MyGLWidget::~MyGLWidget()
@@ -43,10 +49,10 @@ void MyGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslatef(0.0, 0.0, -10.0);
-    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
-    glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
-    glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
+    glTranslated(0.0 + xTran, 0.5 + yTran, -10.0 + zTran);
+    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
+    glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
+    glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
     draw();
 }
 
@@ -108,12 +114,56 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton) {
         setXRotation(xRot + 8 * dy);
         setYRotation(yRot + 8 * dx);
-    } else if (event->buttons() & Qt::RightButton) {
+		setZRotation(zRot + 4 * dy);
+    } /*else if (event->buttons() & Qt::RightButton) {
         setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
-    }
-
+    }*/
     lastPos = event->pos();
+}
+
+void MyGLWidget::keyPressEvent(QKeyEvent * e)
+{
+	int key = e->key();
+	switch (key) {
+	case Qt::Key_Up:
+		// moving forward y direction
+		yTran += 0.1;
+		updateGL();
+		break;
+	case Qt::Key_Down:
+		// moving forward -y direction
+		yTran -= 0.1;
+		updateGL();
+		break;
+	case Qt::Key_Left:
+		// moving forward -x direction
+		xTran -= 0.1;
+		updateGL();
+		break;
+	case Qt::Key_Right:
+		// moving forward x direction
+		xTran += 0.1;
+		updateGL();
+		break;
+	default:
+		// Do nothing
+		break;
+	}
+}
+
+void MyGLWidget::wheelEvent(QWheelEvent * e)
+{
+	float numSteps = e->delta() / 8 / 15;
+
+	if (numSteps == 0) {
+		e->ignore();
+		return;
+	}
+
+	zTran += numSteps/10;
+	e->accept();
+	updateGL();
 }
 
 void MyGLWidget::draw()
@@ -121,12 +171,63 @@ void MyGLWidget::draw()
     qglColor(Qt::white);
     glBegin(GL_QUADS);
         glNormal3f(0,0,-1);
-        glVertex3f(-1,-1,0);
-        glVertex3f(-1,1,0);
-        glVertex3f(1,1,0);
-        glVertex3f(1,-1,0);
 
+        glVertex3f(-1,-1,0);	//A
+        glVertex3f(-1,1,0);		//B
+        glVertex3f(1,1,0);		//C
+        glVertex3f(1,-1,0);		//D
     glEnd();
+
+	// Left face
+	glBegin(GL_QUADS);
+	glNormal3f(-1, 0, 0);
+
+	glVertex3f(-1, -1, 0);		//A
+	glVertex3f(-1, 1, 0);		//B
+	glVertex3f(-1, 1, -2);		//F
+	glVertex3f(-1, -1, -2);		//E
+	glEnd();
+
+	// Up face
+	glBegin(GL_QUADS);
+	glNormal3f(0, 1, 0);
+
+	glVertex3f(-1, 1, 0);		//B
+	glVertex3f(1, 1, 0);		//C
+	glVertex3f(1, 1, -2);		//G
+	glVertex3f(-1, 1, -2);		//F
+	glEnd();
+
+	// Right face
+	glBegin(GL_QUADS);
+	glNormal3f(1, 0, 0);
+
+	glVertex3f(1, 1, 0);		//C
+	glVertex3f(1, -1, 0);		//D
+	glVertex3f(1, -1, -2);		//H
+	glVertex3f(1, 1, -2);		//G
+	glEnd();
+
+	// Bottom face
+	glBegin(GL_QUADS);
+	glNormal3f(0, -1, 0);
+
+	glVertex3f(-1, -1, 0);		//A
+	glVertex3f(-1, -1, -2);		//E
+	glVertex3f(1, -1, -2);		//H
+	glVertex3f(1, -1, 0);		//D
+	glEnd();
+
+	// Far face
+	glBegin(GL_QUADS);
+	glNormal3f(0, 0, -1);
+
+	glVertex3f(-1, -1, -2);		//E
+	glVertex3f(-1, 1, -2);		//F
+	glVertex3f(1, 1, -2);		//G
+	glVertex3f(1, -1, -2);		//H
+	glEnd();
+
     glBegin(GL_TRIANGLES);
         glNormal3f(0,-1,0.707);
         glVertex3f(-1,-1,0);

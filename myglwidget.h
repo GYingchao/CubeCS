@@ -20,13 +20,21 @@ protected:
 
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+	void keyPressEvent(QKeyEvent * e);
+	void wheelEvent(QWheelEvent * e);
 
 private:
     QPoint lastPos;
 
+	// For rotation control
     int xRot;
     int yRot;
     int zRot;
+
+	// For translation control
+	double xTran;
+	double yTran;
+	double zTran;
 
 private:
    void setXRotation(int angle);
