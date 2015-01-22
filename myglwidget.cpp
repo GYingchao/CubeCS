@@ -43,6 +43,10 @@ void MyGLWidget::initializeGL()
     static GLfloat lightPosition[4] = {0, 0, 10, 1.0};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
+	//	Set up camera
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(0, 0, 10, 0, 0, 0, 0, 0, 1);
 }
 
 void MyGLWidget::paintGL()
@@ -63,11 +67,18 @@ void MyGLWidget::resizeGL(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-#ifdef QT_OPENGL_ES_1
-    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
-#else
-    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
-#endif
+//#ifdef QT_OPENGL_ES_1
+//    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
+//#else
+//    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
+//#endif
+	// Instead we use perspective projection
+	GLdouble fov = 60;
+	GLdouble aspect = height == 0 ? 1 : width / (GLdouble)height;
+	GLdouble zNear = 1.0;
+	GLdouble zFar = 20.0;
+	gluPerspective(fov, aspect, zNear, zFar);
+
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -101,6 +112,21 @@ void MyGLWidget::setZRotation(int angle)
     }
 }
 
+void MyGLWidget::setXTranslation(double offset)
+{
+	xTran += offset;
+}
+
+void MyGLWidget::setYTranslation(double offset)
+{
+	yTran += offset;
+}
+
+void MyGLWidget::setZTranslation(double offset)
+{
+	zTran += offset;
+}
+
 void MyGLWidget::mousePressEvent(QMouseEvent *event)
 {
     lastPos = event->pos();
@@ -115,7 +141,14 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
         setXRotation(xRot + 8 * dy);
         setYRotation(yRot + 8 * dx);
 		setZRotation(zRot + 4 * dy);
-    } /*else if (event->buttons() & Qt::RightButton) {
+		updateGL();
+	}
+	else if (event->buttons() & Qt::MiddleButton) {
+		setXTranslation(dx/50.0);
+		setYTranslation(-dy/50.0);
+		updateGL();
+	}
+	/*else if (event->buttons() & Qt::RightButton) {
         setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
     }*/
@@ -124,6 +157,8 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void MyGLWidget::keyPressEvent(QKeyEvent * e)
 {
+	// Didn't react, dont know why...
+
 	int key = e->key();
 	switch (key) {
 	case Qt::Key_Up:
@@ -161,7 +196,8 @@ void MyGLWidget::wheelEvent(QWheelEvent * e)
 		return;
 	}
 
-	zTran += numSteps/10;
+	//zTran += numSteps/10;
+	setZTranslation(numSteps / 10);
 	e->accept();
 	updateGL();
 }

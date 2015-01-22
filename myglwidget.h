@@ -2,6 +2,7 @@
 #define MYGLWIDGET_H
 
 #include <QGLWidget>
+#include "GL/glut.h"
 
 class MyGLWidget : public QGLWidget
 {
@@ -40,6 +41,9 @@ private:
    void setXRotation(int angle);
    void setYRotation(int angle);
    void setZRotation(int angle);
+   void setXTranslation(double offset);
+   void setYTranslation(double offset);
+   void setZTranslation(double offset);
    void draw();
 };
 
