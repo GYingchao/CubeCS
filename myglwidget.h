@@ -4,6 +4,8 @@
 #include <QGLWidget>
 #include "GL/glut.h"
 
+#include "OpenGLProjector.h"
+
 class MyGLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -26,6 +28,7 @@ protected:
 
 private:
     QPoint lastPos;
+	OpenGLProjector projector;
 
 	// For rotation control
     int xRot;

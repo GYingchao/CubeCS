@@ -37,6 +37,8 @@ void MyGLWidget::initializeGL()
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
 
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     // Set up light
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -268,7 +270,7 @@ void MyGLWidget::draw()
         glNormal3f(0,-1,0.707);
         glVertex3f(-1,-1,0);
         glVertex3f(1,-1,0);
-        glVertex3f(0,0,1.2);
+        glVertex3f(0,0,1.2);	//T
     glEnd();
     glBegin(GL_TRIANGLES);
         glNormal3f(1,0, 0.707);

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1097</width>
-    <height>746</height>
+    <width>1439</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>TestCS</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="MyGLWidget" name="myGLWidget" native="true">
@@ -19,8 +19,48 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>721</width>
-      <height>711</height>
+      <width>711</width>
+      <height>680</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="MyImageWidget" name="imageWidget1" native="true">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>0</y>
+      <width>351</width>
+      <height>331</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="MyImageWidget" name="imageWidget2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1089</x>
+      <y>0</y>
+      <width>351</width>
+      <height>331</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="MyImageWidget" name="imageWidget3" native="true">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>349</y>
+      <width>351</width>
+      <height>331</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="MyImageWidget" name="imageWidget4" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1089</x>
+      <y>349</y>
+      <width>351</width>
+      <height>331</height>
      </rect>
     </property>
    </widget>
@@ -30,7 +70,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1097</width>
+     <width>1439</width>
      <height>26</height>
     </rect>
    </property>
@@ -51,6 +91,12 @@
    <class>MyGLWidget</class>
    <extends>QWidget</extends>
    <header>myglwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyImageWidget</class>
+   <extends>QWidget</extends>
+   <header>myimagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

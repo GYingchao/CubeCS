@@ -20,6 +20,7 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 #include "myglwidget.h"
+#include "myimagewidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -28,6 +29,10 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     MyGLWidget *myGLWidget;
+    MyImageWidget *imageWidget1;
+    MyImageWidget *imageWidget2;
+    MyImageWidget *imageWidget3;
+    MyImageWidget *imageWidget4;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -36,16 +41,28 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1097, 746);
+        MainWindow->resize(1439, 743);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         myGLWidget = new MyGLWidget(centralWidget);
         myGLWidget->setObjectName(QStringLiteral("myGLWidget"));
-        myGLWidget->setGeometry(QRect(0, 0, 721, 711));
+        myGLWidget->setGeometry(QRect(0, 0, 711, 680));
+        imageWidget1 = new MyImageWidget(centralWidget);
+        imageWidget1->setObjectName(QStringLiteral("imageWidget1"));
+        imageWidget1->setGeometry(QRect(720, 0, 351, 331));
+        imageWidget2 = new MyImageWidget(centralWidget);
+        imageWidget2->setObjectName(QStringLiteral("imageWidget2"));
+        imageWidget2->setGeometry(QRect(1089, 0, 351, 331));
+        imageWidget3 = new MyImageWidget(centralWidget);
+        imageWidget3->setObjectName(QStringLiteral("imageWidget3"));
+        imageWidget3->setGeometry(QRect(720, 349, 351, 331));
+        imageWidget4 = new MyImageWidget(centralWidget);
+        imageWidget4->setObjectName(QStringLiteral("imageWidget4"));
+        imageWidget4->setGeometry(QRect(1089, 349, 351, 331));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1097, 26));
+        menuBar->setGeometry(QRect(0, 0, 1439, 26));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -61,7 +78,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "TestCS", 0));
     } // retranslateUi
 
 };
