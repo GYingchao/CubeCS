@@ -6,10 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-	ui->imageWidget1->setBackgroundImage("D://rProjects//cubeCS//image//v1.JPG");
-	ui->imageWidget2->setBackgroundImage("D://rProjects//cubeCS//image//v2.JPG");
-	ui->imageWidget3->setBackgroundImage("D://rProjects//cubeCS//image//v3.JPG");
-	ui->imageWidget4->setBackgroundImage("D://rProjects//cubeCS//image//v4.JPG");
+	ui->imageWidget1->setBackgroundImage("d://rprojects//cubecs//image//bkg.jpg");
+	ui->imageWidget2->setBackgroundImage("d://rprojects//cubecs//image//bkg.jpg");
+	ui->imageWidget3->setBackgroundImage("d://rprojects//cubecs//image//bkg.jpg");
+	ui->imageWidget4->setBackgroundImage("d://rprojects//cubecs//image//bkg.jpg");
 }
 
 MainWindow::~MainWindow()

@@ -5,8 +5,9 @@ MyImageWidget::MyImageWidget(QWidget *parent)
 {
 	//// Initialize background to white board
 	//QImage white(360, 340, QImage::Format_RGB32);
-	//white.fill(QColor(1, 1, 1));
+	//white.fill(QColor(0, 1, 1));
 	//background = white;
+	//this->repaint();
 }
 
 MyImageWidget::~MyImageWidget()

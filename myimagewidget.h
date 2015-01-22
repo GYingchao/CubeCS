@@ -23,6 +23,7 @@ public:
 	void paintEvent(QPaintEvent *event);
 private:
 	QImage background;	// original loaded images
+	QImage background_plus;	// canvas for drawing 2d features
 	
 };
 
