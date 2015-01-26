@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QRect>
+#include <QPen>
 
 #include <string>
 

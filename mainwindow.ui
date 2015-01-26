@@ -10,6 +10,9 @@
     <height>743</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>TestCS</string>
   </property>
@@ -22,6 +25,9 @@
       <width>711</width>
       <height>680</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
    </widget>
    <widget class="MyImageWidget" name="imageWidget1" native="true">

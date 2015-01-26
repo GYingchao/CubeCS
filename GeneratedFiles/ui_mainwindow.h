@@ -42,11 +42,13 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(1439, 743);
+        MainWindow->setFocusPolicy(Qt::StrongFocus);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         myGLWidget = new MyGLWidget(centralWidget);
         myGLWidget->setObjectName(QStringLiteral("myGLWidget"));
         myGLWidget->setGeometry(QRect(0, 0, 711, 680));
+        myGLWidget->setFocusPolicy(Qt::NoFocus);
         imageWidget1 = new MyImageWidget(centralWidget);
         imageWidget1->setObjectName(QStringLiteral("imageWidget1"));
         imageWidget1->setGeometry(QRect(720, 0, 351, 331));

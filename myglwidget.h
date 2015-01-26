@@ -23,7 +23,7 @@ protected:
 
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-	void keyPressEvent(QKeyEvent * e);
+	//void keyPressEvent(QKeyEvent * e);
 	void wheelEvent(QWheelEvent * e);
 
 private:
@@ -48,6 +48,9 @@ private:
    void setYTranslation(double offset);
    void setZTranslation(double offset);
    void draw();
+
+public:
+	std::vector<trimesh::point> getCurrent2DProjection();
 };
 
 #endif // MYGLWIDGET_H

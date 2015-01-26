@@ -53,9 +53,10 @@ void MyGLWidget::initializeGL()
 
 void MyGLWidget::paintGL()
 {
+	glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslated(0.0 + xTran, 0.5 + yTran, -10.0 + zTran);
+    glTranslated(0.0 + xTran, 0.5 + yTran, -6.0 + zTran);
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
@@ -157,37 +158,41 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
     lastPos = event->pos();
 }
 
-void MyGLWidget::keyPressEvent(QKeyEvent * e)
-{
-	// Didn't react, dont know why...
-
-	int key = e->key();
-	switch (key) {
-	case Qt::Key_Up:
-		// moving forward y direction
-		yTran += 0.1;
-		updateGL();
-		break;
-	case Qt::Key_Down:
-		// moving forward -y direction
-		yTran -= 0.1;
-		updateGL();
-		break;
-	case Qt::Key_Left:
-		// moving forward -x direction
-		xTran -= 0.1;
-		updateGL();
-		break;
-	case Qt::Key_Right:
-		// moving forward x direction
-		xTran += 0.1;
-		updateGL();
-		break;
-	default:
-		// Do nothing
-		break;
-	}
-}
+//void MyGLWidget::keyPressEvent(QKeyEvent * e)
+//{
+//	// Didn't react if Focus Policy is by default (No Focus)
+//
+//	int key = e->key();
+//	switch (key) {
+//	case Qt::Key_Up:
+//		// moving forward y direction
+//		yTran += 0.1;
+//		updateGL();
+//		break;
+//	case Qt::Key_Down:
+//		// moving forward -y direction
+//		yTran -= 0.1;
+//		updateGL();
+//		break;
+//	case Qt::Key_Left:
+//		// moving forward -x direction
+//		xTran -= 0.1;
+//		updateGL();
+//		break;
+//	case Qt::Key_Right:
+//		// moving forward x direction
+//		xTran += 0.1;
+//		updateGL();
+//		break;
+//	case Qt::Key_1:
+//		// Save the current view into image widget 1
+//		
+//		break;
+//	default:
+//		// Do nothing
+//		break;
+//	}
+//}
 
 void MyGLWidget::wheelEvent(QWheelEvent * e)
 {
@@ -290,4 +295,35 @@ void MyGLWidget::draw()
         glVertex3f(-1,-1,0);
         glVertex3f(0,0,1.2);
     glEnd();
+}
+
+std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
+{
+	this->projector.UpdateMatrices();
+	trimesh::point ptA(-1, -1, 0);		//A
+	trimesh::point ptB(-1, 1, 0);		//B
+	trimesh::point ptC(1, 1, 0);		//C
+	trimesh::point ptD(1, -1, 0);		//D
+
+	trimesh::point ptE(-1, -1, -2);		//E
+	trimesh::point ptF(-1, 1, -2);		//F
+	trimesh::point ptG(1, 1, -2);		//G
+	trimesh::point ptH(1, -1, -2);		//H
+
+	trimesh::point ptT(0, 0, 1.2);
+
+	std::vector<trimesh::point> toDrawPts;
+	toDrawPts.clear();
+
+	toDrawPts.push_back(projector.Project(ptA));
+	toDrawPts.push_back(projector.Project(ptB));
+	toDrawPts.push_back(projector.Project(ptC));
+	toDrawPts.push_back(projector.Project(ptD));
+	toDrawPts.push_back(projector.Project(ptE));
+	toDrawPts.push_back(projector.Project(ptF));
+	toDrawPts.push_back(projector.Project(ptG));
+	toDrawPts.push_back(projector.Project(ptH));
+	toDrawPts.push_back(projector.Project(ptT));
+
+	return toDrawPts;
 }
