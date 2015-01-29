@@ -1,9 +1,12 @@
 #include <QtWidgets>
 #include <QtOpenGL>
+#include <QImage>
 
 #include <iostream>
 
 #include "myglwidget.h"
+
+#define DEPTH_0 0.1
 
 MyGLWidget::MyGLWidget(QWidget *parent) :
     QGLWidget(parent)
@@ -53,7 +56,6 @@ void MyGLWidget::initializeGL()
 
 void MyGLWidget::paintGL()
 {
-	glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     glTranslated(0.0 + xTran, 0.5 + yTran, -6.0 + zTran);
@@ -300,30 +302,122 @@ void MyGLWidget::draw()
 std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 {
 	this->projector.UpdateMatrices();
-	trimesh::point ptA(-1, -1, 0);		//A
-	trimesh::point ptB(-1, 1, 0);		//B
-	trimesh::point ptC(1, 1, 0);		//C
-	trimesh::point ptD(1, -1, 0);		//D
+	trimesh::point ptA(-1, -1, 0);		//3d A
+	trimesh::point ptB(-1, 1, 0);		//3d B
+	trimesh::point ptC(1, 1, 0);		//3d C
+	trimesh::point ptD(1, -1, 0);		//3d D
 
-	trimesh::point ptE(-1, -1, -2);		//E
-	trimesh::point ptF(-1, 1, -2);		//F
-	trimesh::point ptG(1, 1, -2);		//G
-	trimesh::point ptH(1, -1, -2);		//H
+	trimesh::point ptE(-1, -1, -2);		//3d E
+	trimesh::point ptF(-1, 1, -2);		//3d F
+	trimesh::point ptG(1, 1, -2);		//3d G
+	trimesh::point ptH(1, -1, -2);		//3d H
 
-	trimesh::point ptT(0, 0, 1.2);
+	trimesh::point ptT(0, 0, 1.2);		//3d T
+
+	trimesh::point A = projector.Project(ptA);
+	trimesh::point B = projector.Project(ptB);
+	trimesh::point C = projector.Project(ptC);
+	trimesh::point D = projector.Project(ptD);
+	trimesh::point E = projector.Project(ptE);
+	trimesh::point F = projector.Project(ptF);
+	trimesh::point G = projector.Project(ptG);
+	trimesh::point H = projector.Project(ptH);
+	trimesh::point T = projector.Project(ptT);
+
+	// Depth Test		X[2] = 1 pass / X[2] = -1 fail
+	float depth;
+	glReadPixels(A[0], A[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - A[2]) >= DEPTH_0) A[2] = 1;
+	else A[2] = -1;
+
+	glReadPixels(B[0], B[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - B[2]) >= DEPTH_0) B[2] = 1;
+	else B[2] = -1;
+
+	glReadPixels(C[0], C[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - C[2]) >= DEPTH_0) C[2] = 1;
+	else C[2] = -1;
+
+	glReadPixels(D[0], D[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - D[2]) >= DEPTH_0) D[2] = 1;
+	else D[2] = -1;
+
+	glReadPixels(E[0], E[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - E[2]) >= DEPTH_0) E[2] = 1;
+	else E[2] = -1;
+
+	glReadPixels(F[0], F[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - F[2]) >= DEPTH_0) F[2] = 1;
+	else F[2] = -1;
+
+	glReadPixels(G[0], G[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - G[2]) >= DEPTH_0) G[2] = 1;
+	else G[2] = -1;
+
+	glReadPixels(H[0], H[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - H[2]) >= DEPTH_0) H[2] = 1;
+	else H[2] = -1;
+
+	glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - T[2]) >= DEPTH_0) T[2] = 1;
+	else T[2] = -1;
+
+	int length = this->width()*this->height();
+	float* depth_buffer = new float[length];
+	glReadPixels(0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, depth_buffer);
+
+	std::vector<unsigned char> data(length);
+
+	for (int i = 0; i < length; ++i) {
+		data[i] = (unsigned char)(depth_buffer[i] * 255);
+	}
+
+	cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
+	
+	//cv::namedWindow("debug win");
+	cv::imshow("debug win",depthimg);
 
 	std::vector<trimesh::point> toDrawPts;
 	toDrawPts.clear();
 
-	toDrawPts.push_back(projector.Project(ptA));
-	toDrawPts.push_back(projector.Project(ptB));
-	toDrawPts.push_back(projector.Project(ptC));
-	toDrawPts.push_back(projector.Project(ptD));
-	toDrawPts.push_back(projector.Project(ptE));
-	toDrawPts.push_back(projector.Project(ptF));
-	toDrawPts.push_back(projector.Project(ptG));
-	toDrawPts.push_back(projector.Project(ptH));
-	toDrawPts.push_back(projector.Project(ptT));
+	//toDrawPts.push_back(A);
+	//toDrawPts.push_back(B);
+	//toDrawPts.push_back(C);
+	//toDrawPts.push_back(D);
+	//toDrawPts.push_back(E);
+	//toDrawPts.push_back(F);
+	//toDrawPts.push_back(G);
+	//toDrawPts.push_back(H);
+	//toDrawPts.push_back(T);
+
+
+	toDrawPts.push_back(T);		// triangle TAB
+	toDrawPts.push_back(A);
+	toDrawPts.push_back(B);
+	toDrawPts.push_back(T);		// triangle TBC
+	toDrawPts.push_back(B);
+	toDrawPts.push_back(C);
+	toDrawPts.push_back(T);		// triangle TCD
+	toDrawPts.push_back(C);
+	toDrawPts.push_back(D);
+	toDrawPts.push_back(T);		// triangle TDA
+	toDrawPts.push_back(D);
+	toDrawPts.push_back(A);	
+	toDrawPts.push_back(T);
+
+	toDrawPts.push_back(A);		//	quad AEFB
+	toDrawPts.push_back(E);
+	toDrawPts.push_back(F);
+	toDrawPts.push_back(B);		//	quad BFGC
+	toDrawPts.push_back(F);
+	toDrawPts.push_back(G);
+	toDrawPts.push_back(C);		//	quad CGHD
+	toDrawPts.push_back(G);
+	toDrawPts.push_back(H);
+	toDrawPts.push_back(D);		//	quad DHEA
+	toDrawPts.push_back(H);
+	toDrawPts.push_back(E);
+	toDrawPts.push_back(A);
 
 	return toDrawPts;
 }

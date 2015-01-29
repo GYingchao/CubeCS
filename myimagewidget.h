@@ -26,6 +26,6 @@ private:
 	QImage background;	// original loaded images
 	QImage background_plus;	// canvas for drawing 2d features
 	
-};
+};     
 
 #endif // MYIMAGEWIDGET_H

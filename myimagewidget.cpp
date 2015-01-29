@@ -24,8 +24,9 @@ void MyImageWidget::Draw2dProjection(std::vector<trimesh::point>& model_pts)
 	pen.setWidth(3);
 	QPainter pixPaint(&background_plus);
 	pixPaint.setPen(pen);
+	pixPaint.setRenderHint(QPainter::Antialiasing);
 	
-	trimesh::point A = model_pts[0];
+	/*trimesh::point A = model_pts[0];
 	trimesh::point B = model_pts[1];
 	trimesh::point C = model_pts[2];
 	trimesh::point D = model_pts[3];
@@ -35,40 +36,45 @@ void MyImageWidget::Draw2dProjection(std::vector<trimesh::point>& model_pts)
 	trimesh::point G = model_pts[6];
 	trimesh::point H = model_pts[7];
 
-	trimesh::point T = model_pts[8];
+	trimesh::point T = model_pts[8];*/
+
+	//int HEIGHT = background.height();
+
+	//pixPaint.drawLine(T[0], HEIGHT - T[1], A[0], HEIGHT - A[1]);	//TA
+	//pixPaint.drawLine(T[0], HEIGHT - T[1], B[0], HEIGHT - B[1]);	//TB
+	//pixPaint.drawLine(T[0], HEIGHT - T[1], C[0], HEIGHT - C[1]);	//TC
+	//pixPaint.drawLine(T[0], HEIGHT - T[1], D[0], HEIGHT - D[1]);	//TD
+
+	//pixPaint.drawLine(A[0], HEIGHT - A[1], B[0], HEIGHT - B[1]);	//AB
+	//pixPaint.drawLine(B[0], HEIGHT - B[1], C[0], HEIGHT - C[1]);	//BC
+	//pixPaint.drawLine(C[0], HEIGHT - C[1], D[0], HEIGHT - D[1]);	//CD
+	//pixPaint.drawLine(D[0], HEIGHT - D[1], A[0], HEIGHT - A[1]);	//DA
+
+	//pixPaint.drawLine(A[0], HEIGHT - A[1], E[0], HEIGHT - E[1]);	//AE
+	//pixPaint.drawLine(B[0], HEIGHT - B[1], F[0], HEIGHT - F[1]);	//BF
+	//pixPaint.drawLine(C[0], HEIGHT - C[1], G[0], HEIGHT - G[1]);	//CG
+	//pixPaint.drawLine(D[0], HEIGHT - D[1], H[0], HEIGHT - H[1]);	//DH
+
+	//pixPaint.drawLine(E[0], HEIGHT - E[1], F[0], HEIGHT - F[1]);	//EF
+	//pixPaint.drawLine(F[0], HEIGHT - F[1], G[0], HEIGHT - G[1]);	//FG
+	//pixPaint.drawLine(G[0], HEIGHT - G[1], H[0], HEIGHT - H[1]);	//GH
+	//pixPaint.drawLine(H[0], HEIGHT - H[1], E[0], HEIGHT - E[1]);	//HE
 
 	int HEIGHT = background.height();
-	pixPaint.drawLine(T[0], HEIGHT - T[1], A[0], HEIGHT - A[1]);	//TA
-	pixPaint.drawLine(T[0], HEIGHT - T[1], B[0], HEIGHT - B[1]);	//TB
-	pixPaint.drawLine(T[0], HEIGHT - T[1], C[0], HEIGHT - C[1]);	//TC
-	pixPaint.drawLine(T[0], HEIGHT - T[1], D[0], HEIGHT - D[1]);	//TD
-
-	pixPaint.drawLine(A[0], HEIGHT - A[1], B[0], HEIGHT - B[1]);	//AB
-	pixPaint.drawLine(B[0], HEIGHT - B[1], C[0], HEIGHT - C[1]);	//BC
-	pixPaint.drawLine(C[0], HEIGHT - C[1], D[0], HEIGHT - D[1]);	//CD
-	pixPaint.drawLine(D[0], HEIGHT - D[1], A[0], HEIGHT - A[1]);	//DA
-
-	pixPaint.drawLine(A[0], HEIGHT - A[1], E[0], HEIGHT - E[1]);	//AE
-	pixPaint.drawLine(B[0], HEIGHT - B[1], F[0], HEIGHT - F[1]);	//BF
-	pixPaint.drawLine(C[0], HEIGHT - C[1], G[0], HEIGHT - G[1]);	//CG
-	pixPaint.drawLine(D[0], HEIGHT - D[1], H[0], HEIGHT - H[1]);	//DH
-
-	pixPaint.drawLine(E[0], HEIGHT - E[1], F[0], HEIGHT - F[1]);	//EF
-	pixPaint.drawLine(F[0], HEIGHT - F[1], G[0], HEIGHT - G[1]);	//FG
-	pixPaint.drawLine(G[0], HEIGHT - G[1], H[0], HEIGHT - H[1]);	//GH
-	pixPaint.drawLine(H[0], HEIGHT - H[1], E[0], HEIGHT - E[1]);	//HE
+	for (int i = 0; i < model_pts.size() - 1; i++) {
+		if (model_pts[i][2] == -1 && model_pts[i + 1][2] == -1) {	//	Pass the depth test
+			pixPaint.drawLine(model_pts[i][0], HEIGHT - model_pts[i][1], model_pts[i + 1][0], HEIGHT - model_pts[i + 1][1]);
+		}
+	}
 
 	pen.setColor(Qt::red);
 	pen.setWidth(5);
 	pixPaint.setPen(pen);
-	for (int i = 0; i < model_pts.size()-1; i++) {
-		pixPaint.drawPoint(model_pts[i][0], HEIGHT - model_pts[i][1]);
+	for (int i = 0; i < model_pts.size(); i++) {
+		//if (model_pts[i][2] == 1) {
+			pixPaint.drawPoint(model_pts[i][0], HEIGHT - model_pts[i][1]);
+		//}
 	}
-	int last = model_pts.size() - 1;
-	pen.setColor(Qt::black);
-	pen.setWidth(7);
-	pixPaint.setPen(pen);
-	pixPaint.drawPoint(model_pts[last][0], HEIGHT - model_pts[last][1]);
 	return;
 }
 
