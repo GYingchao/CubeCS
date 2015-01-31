@@ -53,6 +53,8 @@ private:
    void setYTranslation(double offset);
    void setZTranslation(double offset);
    void draw();
+   //	This func is to address the float coordinates trunc when locate depth
+   float getDepthFromOpengl(float x, float y);
 
 public:
 	std::vector<trimesh::point> getCurrent2DProjection();
