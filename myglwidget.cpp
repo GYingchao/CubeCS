@@ -45,20 +45,17 @@ void MyGLWidget::initializeGL()
     // Set up light
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    static GLfloat lightPosition[4] = {0, 0, 10, 1.0};
+    static GLfloat lightPosition[4] = {0, 0, 5, 1.0};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-
-	//	Set up camera
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0, 0, 10, 0, 0, 0, 0, 0, 1);
 }
 
 void MyGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslated(0.0 + xTran, 0.5 + yTran, -6.0 + zTran);
+	//gluLookAt(0.0 + xTran, 0.0 + yTran, 10 + zTran, 0, 0, 0, 0, 1, 0);
+    glTranslated(0.0 + xTran, 0.0 + yTran, -6.0+ zTran);
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
@@ -80,7 +77,7 @@ void MyGLWidget::resizeGL(int width, int height)
 	// Instead we use perspective projection
 	GLdouble fov = 60;
 	GLdouble aspect = height == 0 ? 1 : width / (GLdouble)height;
-	GLdouble zNear = 1.0;
+	GLdouble zNear = 2.0;
 	GLdouble zFar = 20.0;
 	gluPerspective(fov, aspect, zNear, zFar);
 
@@ -325,7 +322,7 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 	trimesh::point T = projector.Project(ptT);
 
 	// Depth Test		X[2] = 1 pass / X[2] = -1 fail
-	float depth;
+	/*float depth;
 	glReadPixels(A[0], A[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 	if (abs(depth - A[2]) >= DEPTH_0) A[2] = 1;
 	else A[2] = -1;
@@ -360,22 +357,18 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 
 	glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 	if (abs(depth - T[2]) >= DEPTH_0) T[2] = 1;
-	else T[2] = -1;
+	else T[2] = -1;*/
 
-	int length = this->width()*this->height();
-	float* depth_buffer = new float[length];
-	glReadPixels(0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, depth_buffer);
-
-	std::vector<unsigned char> data(length);
-
-	for (int i = 0; i < length; ++i) {
-		data[i] = (unsigned char)(depth_buffer[i] * 255);
-	}
-
-	cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
-	
-	//cv::namedWindow("debug win");
-	cv::imshow("debug win",depthimg);
+	//int length = this->width()*this->height();
+	//float* depth_buffer = new float[length];
+	//glReadPixels(0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, depth_buffer);
+	//std::vector<unsigned char> data(length);
+	//for (int i = 0; i < length; ++i) {
+	//	data[i] = (unsigned char)(depth_buffer[i] * 255);
+	//}
+	//cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
+	////cv::namedWindow("debug win");
+	//cv::imshow("debug win",depthimg);
 
 	std::vector<trimesh::point> toDrawPts;
 	toDrawPts.clear();
