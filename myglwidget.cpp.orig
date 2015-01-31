@@ -348,9 +348,15 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 	trimesh::point T = projector.Project(ptT);
 
 	// Depth Test		X[2] = 1 pass / X[2] = -1 fail
+<<<<<<< HEAD
+	/*float depth;
+	glReadPixels(A[0], A[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - A[2]) >= DEPTH_0) A[2] = 1;
+=======
 	float depth = getDepthFromOpengl(A[0], A[1]);
 	//glReadPixels(A[0], A[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 	if ((A[2] - depth) < DEPTH_0) A[2] = 1;
+>>>>>>> depth_test
 	else A[2] = -1;
 
 	depth = getDepthFromOpengl(B[0], B[1]);
@@ -388,26 +394,38 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 	if ((H[2] - depth) < DEPTH_0) H[2] = 1;
 	else H[2] = -1;
 
+<<<<<<< HEAD
+	glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if (abs(depth - T[2]) >= DEPTH_0) T[2] = 1;
+	else T[2] = -1;*/
+=======
 	depth = getDepthFromOpengl(T[0], T[1]);
 	//glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	//qDebug() << "T " << T[0] << ", " << T[1] << " depth: " << T[2] << " in opengl: " << depth << "\n";
+	qDebug() << "T " << T[0] << ", " << T[1] << " depth: " << T[2] << " in opengl: " << depth << "\n";
 	if ((T[2] - depth) < DEPTH_0) T[2] = 1;
+	else T[2] = -1;
+>>>>>>> depth_test
+
 	//int length = this->width()*this->height();
 	//float* depth_buffer = new float[length];
 	//glReadPixels(0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, depth_buffer);
+<<<<<<< HEAD
 	//std::vector<unsigned char> data(length);
+	//for (int i = 0; i < length; ++i) {
+	//	data[i] = (unsigned char)(depth_buffer[i] * 255);
+	//}
+	//cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
+=======
+
+	//std::vector<unsigned char> data(length);
+
 	//for (int i = 0; i < length; ++i) {
 	//	data[i] = (unsigned char)(depth_buffer[i] * 255);
 	//}
 
 	//cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
 	//
-	////cv::namedWindow("debug win");
-	//cv::imshow("debug win",depthimg);
-	//for (int i = 0; i < length; ++i) {
-	//	data[i] = (unsigned char)(depth_buffer[i] * 255);
-	//}
-	//cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
+>>>>>>> depth_test
 	////cv::namedWindow("debug win");
 	//cv::imshow("debug win",depthimg);
 
