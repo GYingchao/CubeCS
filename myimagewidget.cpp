@@ -62,7 +62,7 @@ void MyImageWidget::Draw2dProjection(std::vector<trimesh::point>& model_pts)
 
 	int HEIGHT = background.height();
 	for (int i = 0; i < model_pts.size() - 1; i++) {
-		if (model_pts[i][2] == -1 && model_pts[i + 1][2] == -1) {	//	Pass the depth test
+		if (model_pts[i][2] == 1 && model_pts[i + 1][2] == 1) {	//	Pass the depth test
 			pixPaint.drawLine(model_pts[i][0], HEIGHT - model_pts[i][1], model_pts[i + 1][0], HEIGHT - model_pts[i + 1][1]);
 		}
 	}

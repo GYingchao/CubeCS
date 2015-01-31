@@ -6,7 +6,7 @@
 
 #include "myglwidget.h"
 
-#define DEPTH_0 0.1
+#define DEPTH_0 0.01
 
 MyGLWidget::MyGLWidget(QWidget *parent) :
     QGLWidget(parent)
@@ -299,6 +299,32 @@ void MyGLWidget::draw()
     glEnd();
 }
 
+float MyGLWidget::getDepthFromOpengl(float x, float y)
+{
+	int Zx = (int)x;
+	int Zy = (int)y;
+	float tem = 0.0;
+	glReadPixels(Zx, Zy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	float depth = tem;
+	glReadPixels(Zx+1, Zy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx + 1, Zy+1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx, Zy + 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx-1, Zy+1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx - 1, Zy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx - 1, Zy - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx, Zy - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	glReadPixels(Zx + 1, Zy - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
+	if (depth > tem) depth = tem;
+	return depth;
+}
+
 std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 {
 	this->projector.UpdateMatrices();
@@ -325,57 +351,66 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 	trimesh::point T = projector.Project(ptT);
 
 	// Depth Test		X[2] = 1 pass / X[2] = -1 fail
-	float depth;
-	glReadPixels(A[0], A[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - A[2]) >= DEPTH_0) A[2] = 1;
+	float depth = getDepthFromOpengl(A[0], A[1]);
+	//glReadPixels(A[0], A[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((A[2] - depth) < DEPTH_0) A[2] = 1;
 	else A[2] = -1;
 
-	glReadPixels(B[0], B[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - B[2]) >= DEPTH_0) B[2] = 1;
+	depth = getDepthFromOpengl(B[0], B[1]);
+	//glReadPixels(B[0], B[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((B[2] - depth) < DEPTH_0) B[2] = 1;
 	else B[2] = -1;
 
-	glReadPixels(C[0], C[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - C[2]) >= DEPTH_0) C[2] = 1;
+	depth = getDepthFromOpengl(C[0], C[1]);
+	//glReadPixels(C[0], C[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((C[2] - depth) < DEPTH_0) C[2] = 1;
 	else C[2] = -1;
 
-	glReadPixels(D[0], D[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - D[2]) >= DEPTH_0) D[2] = 1;
+	depth = getDepthFromOpengl(D[0], D[1]);
+	//glReadPixels(D[0], D[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((D[2] - depth) < DEPTH_0) D[2] = 1;
 	else D[2] = -1;
 
-	glReadPixels(E[0], E[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - E[2]) >= DEPTH_0) E[2] = 1;
+	depth = getDepthFromOpengl(E[0], E[1]);
+	//glReadPixels(E[0], E[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((E[2] - depth) < DEPTH_0) E[2] = 1;
 	else E[2] = -1;
 
-	glReadPixels(F[0], F[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - F[2]) >= DEPTH_0) F[2] = 1;
+	depth = getDepthFromOpengl(F[0], F[1]);
+	//glReadPixels(F[0], F[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((F[2] - depth) < DEPTH_0) F[2] = 1;
 	else F[2] = -1;
 
-	glReadPixels(G[0], G[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - G[2]) >= DEPTH_0) G[2] = 1;
+	depth = getDepthFromOpengl(G[0], G[1]);
+	//glReadPixels(G[0], G[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((G[2] - depth) < DEPTH_0) G[2] = 1;
 	else G[2] = -1;
 
-	glReadPixels(H[0], H[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - H[2]) >= DEPTH_0) H[2] = 1;
+	depth = getDepthFromOpengl(H[0], H[1]);
+	//glReadPixels(H[0], H[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	if ((H[2] - depth) < DEPTH_0) H[2] = 1;
 	else H[2] = -1;
 
-	glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	if (abs(depth - T[2]) >= DEPTH_0) T[2] = 1;
+	depth = getDepthFromOpengl(T[0], T[1]);
+	//glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	qDebug() << "T " << T[0] << ", " << T[1] << " depth: " << T[2] << " in opengl: " << depth << "\n";
+	if ((T[2] - depth) < DEPTH_0) T[2] = 1;
 	else T[2] = -1;
 
-	int length = this->width()*this->height();
-	float* depth_buffer = new float[length];
-	glReadPixels(0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, depth_buffer);
+	//int length = this->width()*this->height();
+	//float* depth_buffer = new float[length];
+	//glReadPixels(0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, depth_buffer);
 
-	std::vector<unsigned char> data(length);
+	//std::vector<unsigned char> data(length);
 
-	for (int i = 0; i < length; ++i) {
-		data[i] = (unsigned char)(depth_buffer[i] * 255);
-	}
+	//for (int i = 0; i < length; ++i) {
+	//	data[i] = (unsigned char)(depth_buffer[i] * 255);
+	//}
 
-	cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
-	
-	//cv::namedWindow("debug win");
-	cv::imshow("debug win",depthimg);
+	//cv::Mat depthimg(this->height(), this->width(), CV_32FC1, depth_buffer );
+	//
+	////cv::namedWindow("debug win");
+	//cv::imshow("debug win",depthimg);
 
 	std::vector<trimesh::point> toDrawPts;
 	toDrawPts.clear();
