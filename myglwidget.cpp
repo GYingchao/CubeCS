@@ -3,6 +3,7 @@
 #include <QImage>
 
 #include <iostream>
+#include <random>
 
 #include "myglwidget.h"
 
@@ -18,6 +19,21 @@ MyGLWidget::MyGLWidget(QWidget *parent) :
 	xTran = 0;
 	yTran = 0;
 	zTran = 0;
+
+	cameras.clear();
+	geometry.clear();
+	// A B C D E F G H T
+	geometry.push_back(trimesh::point(-1, -1, 0));
+	geometry.push_back(trimesh::point(-1, 1, 0));
+	geometry.push_back(trimesh::point(1, 1, 0));
+	geometry.push_back(trimesh::point(1, -1, 0));
+
+	geometry.push_back(trimesh::point(-1, -1, -2));
+	geometry.push_back(trimesh::point(-1, 1, -2));
+	geometry.push_back(trimesh::point(1, 1, -2));
+	geometry.push_back(trimesh::point(1, -1, -2));
+
+	geometry.push_back(trimesh::point(0, 0, 1.2));
 }
 
 MyGLWidget::~MyGLWidget()
@@ -213,89 +229,102 @@ void MyGLWidget::wheelEvent(QWheelEvent * e)
 
 void MyGLWidget::draw()
 {
+	trimesh::point A(geometry[0]);
+	trimesh::point B(geometry[1]);
+	trimesh::point C(geometry[2]);
+	trimesh::point D(geometry[3]);
+
+	trimesh::point E(geometry[4]);
+	trimesh::point F(geometry[5]);
+	trimesh::point G(geometry[6]);
+	trimesh::point H(geometry[7]);
+
+	trimesh::point T(geometry[8]);
+
+
     qglColor(Qt::white);
     glBegin(GL_QUADS);
         glNormal3f(0,0,-1);
 
-        glVertex3f(-1,-1,0);	//A
-        glVertex3f(-1,1,0);		//B
-        glVertex3f(1,1,0);		//C
-        glVertex3f(1,-1,0);		//D
+        glVertex3f(A[0], A[1], A[2]);	//A
+        glVertex3f(B[0],B[1],B[2]);		//B
+		glVertex3f(C[0], C[1], C[2]);	//C
+        glVertex3f(D[0],D[1],D[2]);		//D
     glEnd();
 
 	// Left face
 	glBegin(GL_QUADS);
 	glNormal3f(-1, 0, 0);
 
-	glVertex3f(-1, -1, 0);		//A
-	glVertex3f(-1, 1, 0);		//B
-	glVertex3f(-1, 1, -2);		//F
-	glVertex3f(-1, -1, -2);		//E
+	glVertex3f(A[0], A[1], A[2]);		//A
+	glVertex3f(B[0], B[1], B[2]);		//B
+	glVertex3f(F[0], F[1], F[2]);		//F
+	glVertex3f(E[0], E[1], E[2]);		//E
 	glEnd();
 
 	// Up face
 	glBegin(GL_QUADS);
 	glNormal3f(0, 1, 0);
 
-	glVertex3f(-1, 1, 0);		//B
-	glVertex3f(1, 1, 0);		//C
-	glVertex3f(1, 1, -2);		//G
-	glVertex3f(-1, 1, -2);		//F
+	glVertex3f(B[0], B[1], B[2]);		//B
+	glVertex3f(C[0], C[1], C[2]);		//C
+	glVertex3f(G[0], G[1], G[2]);		//G
+	glVertex3f(F[0], F[1], F[2]);		//F
 	glEnd();
 
 	// Right face
 	glBegin(GL_QUADS);
 	glNormal3f(1, 0, 0);
 
-	glVertex3f(1, 1, 0);		//C
-	glVertex3f(1, -1, 0);		//D
-	glVertex3f(1, -1, -2);		//H
-	glVertex3f(1, 1, -2);		//G
+	glVertex3f(C[0], C[1], C[2]);		//C
+	glVertex3f(D[0], D[1], D[2]);		//D
+	glVertex3f(H[0], H[1], H[2]);		//H
+	glVertex3f(G[0], G[1], G[2]);		//G
 	glEnd();
 
 	// Bottom face
 	glBegin(GL_QUADS);
 	glNormal3f(0, -1, 0);
 
-	glVertex3f(-1, -1, 0);		//A
-	glVertex3f(-1, -1, -2);		//E
-	glVertex3f(1, -1, -2);		//H
-	glVertex3f(1, -1, 0);		//D
+	glVertex3f(A[0], A[1], A[2]);		//A
+	glVertex3f(E[0], E[1], E[2]);		//E
+	glVertex3f(H[0], H[1], H[2]);		//H
+	glVertex3f(D[0], D[1], D[2]);		//D
 	glEnd();
 
 	// Far face
 	glBegin(GL_QUADS);
 	glNormal3f(0, 0, -1);
 
-	glVertex3f(-1, -1, -2);		//E
-	glVertex3f(-1, 1, -2);		//F
-	glVertex3f(1, 1, -2);		//G
-	glVertex3f(1, -1, -2);		//H
+	glVertex3f(E[0], E[1], E[2]);		//E
+	glVertex3f(F[0], F[1], F[2]);		//F
+	glVertex3f(G[0], G[1], G[2]);		//G
+	glVertex3f(H[0], H[1], H[2]);		//H
 	glEnd();
 
     glBegin(GL_TRIANGLES);
         glNormal3f(0,-1,0.707);
-        glVertex3f(-1,-1,0);
-        glVertex3f(1,-1,0);
-        glVertex3f(0,0,1.2);	//T
+		glVertex3f(A[0], A[1], A[2]);			//A
+		glVertex3f(D[0], D[1], D[2]);			//D
+		glVertex3f(T[0], T[1], T[2]);			//T
     glEnd();
     glBegin(GL_TRIANGLES);
         glNormal3f(1,0, 0.707);
-        glVertex3f(1,-1,0);
-        glVertex3f(1,1,0);
-        glVertex3f(0,0,1.2);
+		glVertex3f(D[0], D[1], D[2]);			//D
+		glVertex3f(C[0], C[1], C[2]);			//C
+		glVertex3f(T[0], T[1], T[2]);			//T
     glEnd();
     glBegin(GL_TRIANGLES);
         glNormal3f(0,1,0.707);
-        glVertex3f(1,1,0);
-        glVertex3f(-1,1,0);
-        glVertex3f(0,0,1.2);
+		glVertex3f(C[0], C[1], C[2]);			//C
+		glVertex3f(B[0], B[1], B[2]);			//B
+		glVertex3f(T[0], T[1], T[2]);			//T
     glEnd();
     glBegin(GL_TRIANGLES);
         glNormal3f(-1,0,0.707);
-        glVertex3f(-1,1,0);
-        glVertex3f(-1,-1,0);
-        glVertex3f(0,0,1.2);
+		glVertex3f(B[0], B[1], B[2]);			//B
+		glVertex3f(A[0], A[1], A[2]);			//A
+        glVertex3f(T[0], T[1], T[2]);			//T
     glEnd();
 }
 
@@ -323,6 +352,28 @@ float MyGLWidget::getDepthFromOpengl(float x, float y)
 	glReadPixels(Zx + 1, Zy - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &tem);
 	if (depth > tem) depth = tem;
 	return depth;
+}
+
+void MyGLWidget::saveCamera(int cindex)
+{
+	if (cindex < 1 || cindex >4) return;
+
+	// Get the current opengl matrices from projector
+	OpenGLProjector tem;
+	//tem.setProjectorMatrices(this->projector.ModelViewMatrix(), this->projector.ProjectionMatrix(), this->projector.Viewport());
+	double* m = this->projector.ModelViewMatrix();
+	double* p = this->projector.ProjectionMatrix();
+	int* v = this->projector.Viewport();
+	tem.setProjectorMatrices(m, p, v);
+
+	if (!cameras.empty()) {
+		if (cameras.find(cindex) != cameras.end()) {
+			cameras.erase(cindex);
+		}
+	}
+	
+	cameras.insert(std::pair<int, OpenGLProjector>(cindex, tem));
+	
 }
 
 std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
@@ -393,7 +444,7 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 
 	depth = getDepthFromOpengl(T[0], T[1]);
 	//glReadPixels(T[0], T[1], 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	qDebug() << "T " << T[0] << ", " << T[1] << " depth: " << T[2] << " in opengl: " << depth << "\n";
+	//qDebug() << "T " << T[0] << ", " << T[1] << " depth: " << T[2] << " in opengl: " << depth << "\n";
 	if ((T[2] - depth) < DEPTH_0) T[2] = 1;
 	else T[2] = -1;
 
@@ -455,4 +506,16 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 	toDrawPts.push_back(A);
 
 	return toDrawPts;
+}
+
+void MyGLWidget::GaussianNoise(double mean, double std_dev)
+{
+	//	Add noise for one vertex first, say T
+	std::random_device rd;
+	std::normal_distribution<> d(mean, std_dev);
+	geometry[8][0] += d(rd);
+	geometry[8][1] += d(rd);
+	geometry[8][2] += d(rd);
+
+	this->repaint();
 }

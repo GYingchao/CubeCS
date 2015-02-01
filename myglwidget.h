@@ -1,6 +1,8 @@
 #ifndef MYGLWIDGET_H
 #define MYGLWIDGET_H
 
+#include <map>
+
 #include <QGLWidget>
 #include "GL/glut.h"
 
@@ -34,6 +36,8 @@ protected:
 private:
     QPoint lastPos;
 	OpenGLProjector projector;
+	std::map<int, OpenGLProjector> cameras;
+	std::vector<trimesh::point> geometry;
 
 	// For rotation control
     int xRot;
@@ -58,6 +62,9 @@ private:
 
 public:
 	std::vector<trimesh::point> getCurrent2DProjection();
+	void saveCamera(int cindex);
+
+	void GaussianNoise(double mean, double std_dev);
 };
 
 #endif // MYGLWIDGET_H

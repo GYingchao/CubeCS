@@ -22,6 +22,9 @@ private:
 protected:
 	void keyPressEvent(QKeyEvent * e);
 
+public slots:
+	void Noise();
+
 };
 
 #endif // MAINWINDOW_H

@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -33,6 +34,8 @@ public:
     MyImageWidget *imageWidget2;
     MyImageWidget *imageWidget3;
     MyImageWidget *imageWidget4;
+    QPushButton *pushButton_noise;
+    QPushButton *pushButton_refine;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -41,7 +44,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1439, 743);
+        MainWindow->resize(1439, 765);
         MainWindow->setFocusPolicy(Qt::StrongFocus);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
@@ -61,10 +64,16 @@ public:
         imageWidget4 = new MyImageWidget(centralWidget);
         imageWidget4->setObjectName(QStringLiteral("imageWidget4"));
         imageWidget4->setGeometry(QRect(1089, 349, 351, 331));
+        pushButton_noise = new QPushButton(centralWidget);
+        pushButton_noise->setObjectName(QStringLiteral("pushButton_noise"));
+        pushButton_noise->setGeometry(QRect(190, 690, 75, 23));
+        pushButton_refine = new QPushButton(centralWidget);
+        pushButton_refine->setObjectName(QStringLiteral("pushButton_refine"));
+        pushButton_refine->setGeometry(QRect(400, 690, 75, 23));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1439, 26));
+        menuBar->setGeometry(QRect(0, 0, 1439, 18));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -74,6 +83,7 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         retranslateUi(MainWindow);
+        QObject::connect(pushButton_noise, SIGNAL(clicked()), MainWindow, SLOT(Noise()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -81,6 +91,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "TestCS", 0));
+        pushButton_noise->setText(QApplication::translate("MainWindow", "Distortion", 0));
+        pushButton_refine->setText(QApplication::translate("MainWindow", "Refine", 0));
     } // retranslateUi
 
 };
