@@ -78,6 +78,32 @@ void MyImageWidget::Draw2dProjection(std::vector<trimesh::point>& model_pts)
 	return;
 }
 
+void MyImageWidget::Draw2dProjectionWithDistortion(std::vector<trimesh::point>& model_pts)
+{
+	QPen pen(Qt::red);
+	pen.setWidth(3);
+	QPainter pixPaint(&background_plus);
+	pixPaint.setPen(pen);
+	pixPaint.setRenderHint(QPainter::Antialiasing);
+
+	int HEIGHT = background.height();
+	for (int i = 0; i < model_pts.size() - 1; i++) {
+		//if (model_pts[i][2] == 1 && model_pts[i + 1][2] == 1) {	//	Pass the depth test
+			pixPaint.drawLine(model_pts[i][0], HEIGHT - model_pts[i][1], model_pts[i + 1][0], HEIGHT - model_pts[i + 1][1]);
+		//}
+	}
+
+	//pen.setColor(Qt::red);
+	//pen.setWidth(5);
+	//pixPaint.setPen(pen);
+	//for (int i = 0; i < model_pts.size(); i++) {
+	//	//if (model_pts[i][2] == 1) {
+	//		pixPaint.drawPoint(model_pts[i][0], HEIGHT - model_pts[i][1]);
+	//	//}
+	//}
+	repaint();
+}
+
 void MyImageWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);

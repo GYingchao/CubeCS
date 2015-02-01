@@ -508,6 +508,58 @@ std::vector<trimesh::point> MyGLWidget::getCurrent2DProjection()
 	return toDrawPts;
 }
 
+std::vector<trimesh::point> MyGLWidget::get2DProjection(int cindex)
+{
+	std::vector<trimesh::point> toDrawPts;
+	toDrawPts.clear();
+	if (cindex < 1 || cindex >4 || cameras.find(cindex) == cameras.end()) return toDrawPts;
+
+	std::map<int, OpenGLProjector>::iterator it;
+	it = cameras.find(cindex);
+	OpenGLProjector camera = it->second;
+
+	trimesh::point A = camera.Project(geometry[0]);
+	trimesh::point B = camera.Project(geometry[1]);
+	trimesh::point C = camera.Project(geometry[2]);
+	trimesh::point D = camera.Project(geometry[3]);
+	trimesh::point E = camera.Project(geometry[4]);
+	trimesh::point F = camera.Project(geometry[5]);
+	trimesh::point G = camera.Project(geometry[6]);
+	trimesh::point H = camera.Project(geometry[7]);
+	trimesh::point T = camera.Project(geometry[8]);
+
+	toDrawPts.push_back(T);		// triangle TAB
+	toDrawPts.push_back(A);
+	toDrawPts.push_back(B);
+	toDrawPts.push_back(T);		// triangle TBC
+	toDrawPts.push_back(B);
+	toDrawPts.push_back(C);
+	toDrawPts.push_back(T);		// triangle TCD
+	toDrawPts.push_back(C);
+	toDrawPts.push_back(D);
+	toDrawPts.push_back(T);		// triangle TDA
+	toDrawPts.push_back(D);
+	toDrawPts.push_back(A);
+	toDrawPts.push_back(T);
+
+	toDrawPts.push_back(A);		//	quad AEFB
+	toDrawPts.push_back(E);
+	toDrawPts.push_back(F);
+	toDrawPts.push_back(B);		//	quad BFGC
+	toDrawPts.push_back(F);
+	toDrawPts.push_back(G);
+	toDrawPts.push_back(C);		//	quad CGHD
+	toDrawPts.push_back(G);
+	toDrawPts.push_back(H);
+	toDrawPts.push_back(D);		//	quad DHEA
+	toDrawPts.push_back(H);
+	toDrawPts.push_back(E);
+	toDrawPts.push_back(A);
+
+	return toDrawPts;
+
+}
+
 void MyGLWidget::GaussianNoise(double mean, double std_dev)
 {
 	//	Add noise for one vertex first, say T

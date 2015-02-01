@@ -54,5 +54,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 void MainWindow::Noise()
 {
 	ui->myGLWidget->GaussianNoise(0.0, 0.25);
-
+	ui->imageWidget1->Draw2dProjectionWithDistortion(ui->myGLWidget->get2DProjection(1));
+	ui->imageWidget2->Draw2dProjectionWithDistortion(ui->myGLWidget->get2DProjection(2));
+	ui->imageWidget3->Draw2dProjectionWithDistortion(ui->myGLWidget->get2DProjection(3));
+	ui->imageWidget4->Draw2dProjectionWithDistortion(ui->myGLWidget->get2DProjection(4));
 }

@@ -62,6 +62,7 @@ private:
 
 public:
 	std::vector<trimesh::point> getCurrent2DProjection();
+	std::vector<trimesh::point> get2DProjection(int cindex);
 	void saveCamera(int cindex);
 
 	void GaussianNoise(double mean, double std_dev);

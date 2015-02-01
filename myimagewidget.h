@@ -20,6 +20,7 @@ public:
 	~MyImageWidget();
 
 	void Draw2dProjection(std::vector<trimesh::point>& model_pts);
+	void Draw2dProjectionWithDistortion(std::vector<trimesh::point>& model_pts);
 	void setBackgroundImage(std::string image_dir);
 	void paintEvent(QPaintEvent *event);
 private:
