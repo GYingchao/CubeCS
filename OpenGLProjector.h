@@ -88,6 +88,17 @@ public:
 	
 	}
 
+	void setProjectorMatrices(double modelview[16], double project[16], int viewp[4])
+	{
+		for (int i = 0; i < 16; i++) {
+			this->modelView[i] = modelview[i];
+			this->projection[i] = project[i];
+		}
+		for (int i = 0; i<4; i++) {
+			this->viewport[i] = viewp[i];
+		}
+	}
+
 	~OpenGLProjector(){
 		//if(depthBuffer) delete depthBuffer;
 	}

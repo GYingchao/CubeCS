@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1439</width>
-    <height>743</height>
+    <height>765</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -70,6 +70,32 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_noise">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>690</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Distortion</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_refine">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>690</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Refine</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -77,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>1439</width>
-     <height>26</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
@@ -107,5 +133,25 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_noise</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>Noise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>733</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>719</x>
+     <y>382</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>Noise()</slot>
+ </slots>
 </ui>
